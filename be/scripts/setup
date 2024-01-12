@@ -1,0 +1,11 @@
+#!/bin/sh
+# script/setup: Create docker network that will be used for this project
+
+cd "$(dirname "$0")/.."
+set -e
+
+# Configuring the shared network 
+project_network=$(docker network ls -q --filter "name=express_db_network")
+if [ -z $project_network ]; then
+    docker network create -d bridge "express_db_network"
+fi
