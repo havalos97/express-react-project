@@ -1,26 +1,24 @@
+import { useEffect } from 'react';
 import { FormComment } from '../components/FormComment';
 import { CommentList } from '../components/CommentList';
-import { useState } from 'react';
-import { Comment } from '../types';
+import axios from 'axios';
+import { useCommentsContext } from '../hooks/useComment';
 
 export const MainComponent = () => {
-  // [
-  //   {
-  //     uuid: 'U0284R08WEUJF',
-  //     email: 'hg.avalosc97@gmail.com',
-  //     comment: 'This is a brief comment left by Hector Avalos',
-  //   }
-  // ]
-  const [comments, setComments] = useState<Comment[]>([]);
+  const { comments, setComments } = useCommentsContext();
 
-  // useEffect(() => {
-  //   setComments([] as Comment[]);
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/comments`)
+      .then(({ data }) => {
+        Array.isArray(data) && setComments(data);
+      });
+  }, []);
 
   return (
     <>
       <FormComment />
-      {comments.length && <CommentList comments={comments} />}
+      {comments.length && <CommentList />}
     </>
   );
 };

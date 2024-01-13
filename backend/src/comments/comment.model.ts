@@ -6,7 +6,7 @@ class CommentModel extends Model<Comment> implements Comment {
   public uuid: string;
   public email: string;
   public comment: string;
-  public deleted: boolean;
+  public deleted?: boolean;
 }
 
 CommentModel.init(

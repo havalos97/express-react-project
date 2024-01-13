@@ -1,12 +1,9 @@
+import { FC } from 'react';
 import { Comment } from './Comment';
-import { Comment as CommentType } from '../types';
+import { useCommentsContext } from '../hooks/useComment';
 
-type CommentListProps = {
-  comments: CommentType[];
-}
-
-export const CommentList = ({ comments }: CommentListProps) => {
-  if (!comments.length) return null;
+export const CommentList: FC = () => {
+  const { comments } = useCommentsContext();
 
   return (
     <>

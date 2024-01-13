@@ -3,7 +3,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { healthcheck } from './main/main.controller';
-import { createComment, deleteComment, getAllComments, updateComment } from './comments/comment.controller';
+import {
+  createComment,
+  deleteComment,
+  getAllComments,
+  updateComment,
+} from './comments/comment.service';
 
 const app = express();
 const port = process.env.APP_PORT || 3000;

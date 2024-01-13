@@ -32,6 +32,8 @@ services:
 
   react-frontend:
     container_name: react-frontend
+    volumes:
+      - ./frontend:/usr/src/app/frontend
     build:
       context: ./frontend
     ports:

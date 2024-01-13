@@ -6,7 +6,11 @@ import { HTTPStatusCode } from '../utils/http.status.codes';
 export const getAllComments = async (_: Request, res: Response) => {
   const comments = await CommentModel.findAll();
   const activeComments = comments.filter((comment) => !comment.deleted);
-  res.status(HTTPStatusCode.OK).json(activeComments);
+  const commentsWithoutDeletedProp = activeComments.map((comment) => {
+    const { dataValues: { deleted, ...rest } } = comment;
+    return rest;
+  });
+  res.status(HTTPStatusCode.OK).json(commentsWithoutDeletedProp);
 };
 
 export const createComment = async (req: Request, res: Response) => {

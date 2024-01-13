@@ -1,36 +1,44 @@
-import { Button, Grid, TextField } from '@mui/material';
+import { Alert, Button, Grid, TextField } from '@mui/material';
+import axios from 'axios';
 import { FC, useState } from 'react';
+import { Comment } from '../types';
+import { useCommentsContext } from '../hooks/useComment';
 
 const generateRandomEmail = () => {
   const chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
-  let email = '', domain = '';
+  const emailDomains = ['gmail.com', 'outlook.com', 'outlook.es', 'yahoo.com', 'live.com'];
+  let email = '';
   for(let i=0; i < 15; i++){
     email += chars[Math.floor(Math.random() * chars.length)];
-    domain +=  chars[Math.floor(Math.random() * chars.length)];
   }
-  return email + '@' + domain + '.com';
+  return email + '@' + emailDomains[Math.floor(Math.random() * emailDomains.length)];
 };
 
 export const FormComment: FC = () => {
-  const [comment, setComment] = useState<string | null>(null);
+  const [comment, setComment] = useState<string>('');
+  const [error, setError] = useState('');
+  const { pushComment } = useCommentsContext();
 
   const handleCommentChange =
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setComment(e.target.value);
   
   const handleCommentSubmit = async () => {
+    setError('');
+    if (comment.length <= 0) {
+      setError('El campo no puede quedar vacío');
+      return;
+    }
     const body = {
       email: generateRandomEmail(),
       comment,
     };
 
-    console.log(body);
-    // fetch(`${process.env.REACT_APP_API_URL}/api/comment`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(body),
-    // })
-    //   .then((res) => res.json())
-    //   .then((newComment) => { console.log(newComment); });
+    const { data }: { data: Comment } = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/comment`,
+      body
+    );
+    if (data) pushComment(data);
   };
 
   return (
@@ -40,7 +48,6 @@ export const FormComment: FC = () => {
         <Grid container spacing={2} sx={{ mt: 5 }}>
           <Grid item xs={12}>
             <TextField
-              id="email"
               disabled
               fullWidth
               label="Email"
@@ -49,14 +56,19 @@ export const FormComment: FC = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              id="comment"
               fullWidth
               label="Comment"
               variant="outlined"
               multiline
+              maxRows={4}
               value={comment}
               onChange={handleCommentChange}
             />
+            {error &&
+              <Alert severity="error">
+                {error}
+              </Alert>
+            }
           </Grid>
           <Grid item xs={12}>
             <Button
