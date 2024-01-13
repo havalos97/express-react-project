@@ -1,7 +1,16 @@
 import { createContext, useContext, useState } from 'react';
 import { Comment } from '../types';
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
 import { FormComment } from '../components/FormComment';
+import { deleteComment as deleteFromAPI } from '../api/comments.requests';
 
 type StateDispatch<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -66,6 +75,23 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
     setShowEditModal(false);
   };
 
+  const handleCloseConfirmModal = () => {
+    setUpdateCommentObj({
+      uuid: '',
+      comment: '',
+      email: '',
+    });
+    setShowConfirmModal(false);
+  };
+
+  const deleteCommentFromAPI = async () => {
+    await deleteFromAPI({
+      uuid: updateCommentObj.uuid,
+    });
+    deleteComment(updateCommentObj.uuid);
+    setShowConfirmModal(false);
+  };
+
   return (
     <CommentsContext.Provider
       value={{
@@ -97,6 +123,49 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
           <DialogContent>
             <FormComment shouldUpdate />
           </DialogContent>
+        </Dialog>
+      )}
+      {showConfirmModal && (
+        <Dialog
+          open={true}
+          onClose={handleCloseConfirmModal}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            ¿Seguro que desea eliminar el comentario?
+          </DialogTitle>
+          <DialogContent>
+            <Card variant="outlined">
+              <Typography variant='h6' sx={{ margin: 1 }}>
+                Autor
+              </Typography>
+              <Typography variant='body1' sx={{ margin: 1 }}>
+                {updateCommentObj.email}
+              </Typography>
+              <Typography variant='h6' sx={{ margin: 1 }}>
+                Comentario
+              </Typography>
+              <Typography variant='body1' sx={{ margin: 1 }}>
+                {updateCommentObj.comment}
+              </Typography>
+            </Card>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={deleteCommentFromAPI}
+              variant="outlined"
+            >
+              Si
+            </Button>
+            <Button
+              onClick={handleCloseConfirmModal}
+              variant="contained"
+              autoFocus
+            >
+              No
+            </Button>
+          </DialogActions>
         </Dialog>
       )}
       {children}

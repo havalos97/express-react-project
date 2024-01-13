@@ -4,10 +4,23 @@ import { Comment as CommentType } from '../types';
 import { useCommentsContext } from '../hooks/useComment';
 
 export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
-  const { comments, setUpdateCommentObj, setShowEditModal } = useCommentsContext();
+  const {
+    comments,
+    setUpdateCommentObj,
+    setShowEditModal,
+    setShowConfirmModal,
+  } = useCommentsContext();
 
   const deleteComment = () => {
-    console.log('Delete comment: ' + uuid);
+    const comment = comments.find((comment) => comment.uuid === uuid);
+    if (comment) {
+      setUpdateCommentObj({
+        uuid: comment.uuid,
+        comment: comment.comment,
+        email: comment.email,
+      });
+      setShowConfirmModal(true);
+    }
   };
 
   const updateComment = () => {

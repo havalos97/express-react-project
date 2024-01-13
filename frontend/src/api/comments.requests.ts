@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 type PostCommentParams = { body: Record<string, unknown> };
-type UpdateCommentParams = PostCommentParams & { uuid: string; };
+type DeleteCommentParams = { uuid: string; };
+type UpdateCommentParams = PostCommentParams & DeleteCommentParams;
 
 export const getAllComments = () => axios.get(
   `${process.env.REACT_APP_API_URL}/api/comments/`,
@@ -17,6 +18,6 @@ export const updateComment = ({ body, uuid }: UpdateCommentParams) => axios.put(
   body,
 );
 
-export const deleteComment = ({ uuid }: UpdateCommentParams) => axios.delete(
+export const deleteComment = ({ uuid }: DeleteCommentParams) => axios.delete(
   `${process.env.REACT_APP_API_URL}/api/comment/${uuid}/`,
 );
