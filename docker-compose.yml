@@ -1,0 +1,52 @@
+services:
+  postgres-db:
+    container_name: postgres-db
+    image: postgres:13-alpine
+    env_file:
+      - ./backend/.env
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+    ports:
+      - '5432:5432'
+    networks:
+      - express-db-network
+
+  express-backend:
+    container_name: express-backend
+    image: node:16-alpine
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/usr/src/app/backend
+    command: yarn start
+    ports:
+      - '3001:3001'
+    networks:
+      - express-db-network
+    depends_on:
+      - postgres-db
+    links:
+      - postgres-db:postgres-db
+
+  react-frontend:
+    container_name: react-frontend
+    build:
+      context: ./frontend
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./frontend/.env
+    networks:
+      - express-db-network
+    depends_on:
+      - express-backend
+
+networks:
+  express-db-network:
+    name: express-db-network
+    external: true
+
+volumes:
+  db-data:

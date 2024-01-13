@@ -1,0 +1,9 @@
+# POSTGRES VARIABLES
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=mysecretpassword
+POSTGRES_DB=express_db
+POSTGRES_HOST=postgres-db
+
+# APP CONFIG
+APP_PORT=3001
+APP_HOST=localhost

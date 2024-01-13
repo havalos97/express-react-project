@@ -1,0 +1,8 @@
+#!/bin/sh
+# script/setup: Create docker network that will be used for this project
+
+cd "$(dirname "$0")/.."
+set -e
+
+# Configuring the shared network 
+docker-compose build
