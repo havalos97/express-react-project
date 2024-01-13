@@ -1,5 +1,5 @@
 import { Button, Card, Grid, Typography } from '@mui/material';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Comment as CommentType } from '../types';
 import { useCommentsContext } from '../hooks/useComment';
 
@@ -11,61 +11,59 @@ export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
     setShowConfirmModal,
   } = useCommentsContext();
 
+  const selectedComment = useMemo(
+    () => comments.find((comment) => comment.uuid === uuid) as CommentType,
+    [uuid]
+  );
+
   const deleteComment = () => {
-    const comment = comments.find((comment) => comment.uuid === uuid);
-    if (comment) {
+    if (selectedComment) {
       setUpdateCommentObj({
-        uuid: comment.uuid,
-        comment: comment.comment,
-        email: comment.email,
+        uuid: selectedComment.uuid,
+        comment: selectedComment.comment,
+        email: selectedComment.email,
       });
       setShowConfirmModal(true);
     }
   };
 
   const updateComment = () => {
-    const comment = comments.find((comment) => comment.uuid === uuid);
-    if (comment) {
+    if (selectedComment) {
       setUpdateCommentObj({
-        uuid: comment.uuid,
-        comment: comment.comment,
-        email: comment.email,
+        uuid: selectedComment.uuid,
+        comment: selectedComment.comment,
+        email: selectedComment.email,
       });
       setShowEditModal(true);
     }
   };
 
   return (
-    <Grid container spacing={2} sx={{ mt: 5 }}>
-      <Grid item xs={12} sm={3} md={4} />
-      <Grid item xs={12} sm={6} md={4}>
-        <Card variant="outlined">
-          <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <Typography mt={2} variant='h5' sx={{ margin: 2 }}>
-                {email}
-              </Typography>
-              <Typography mt={2} variant='h6' sx={{ margin: 2 }}>
-                {comment}
-              </Typography>
-              <Button
-                variant="outlined"
-                sx={{ margin: 2 }}
-                onClick={deleteComment}
-              >
-                Delete
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ margin: 2 }}
-                onClick={updateComment}
-              >
-                Edit
-              </Button>
-            </Grid>
-          </Grid>
-        </Card>
+    <Card variant="outlined" sx={{ mt: 2, mb: 4 }}>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <Typography mt={2} variant='h5' sx={{ margin: 2 }}>
+            {email}
+          </Typography>
+          <Typography mt={2} variant='h6' sx={{ margin: 2 }}>
+            {comment}
+          </Typography>
+          <Button
+            variant="outlined"
+            sx={{ margin: 2 }}
+            onClick={deleteComment}
+          >
+            Eliminar
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ margin: 2 }}
+            onClick={updateComment}
+          >
+            Actualizar
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
+    </Card>
   );
 };
