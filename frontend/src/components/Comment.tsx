@@ -1,10 +1,25 @@
 import { Button, Card, Grid, Typography } from '@mui/material';
 import { FC } from 'react';
 import { Comment as CommentType } from '../types';
+import { useCommentsContext } from '../hooks/useComment';
 
 export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
+  const { comments, setUpdateCommentObj, setShowEditModal } = useCommentsContext();
+
   const deleteComment = () => {
-    console.log(uuid);
+    console.log('Delete comment: ' + uuid);
+  };
+
+  const updateComment = () => {
+    const comment = comments.find((comment) => comment.uuid === uuid);
+    if (comment) {
+      setUpdateCommentObj({
+        uuid: comment.uuid,
+        comment: comment.comment,
+        email: comment.email,
+      });
+      setShowEditModal(true);
+    }
   };
 
   return (
@@ -20,11 +35,19 @@ export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
               <Typography mt={2} variant='h6' sx={{ margin: 2 }}>
                 {comment}
               </Typography>
-              <Button variant="outlined" sx={{ margin: 2 }}>
-                Edit
-              </Button>
-              <Button variant="outlined" sx={{ margin: 2 }} onClick={deleteComment}>
+              <Button
+                variant="outlined"
+                sx={{ margin: 2 }}
+                onClick={deleteComment}
+              >
                 Delete
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ margin: 2 }}
+                onClick={updateComment}
+              >
+                Edit
               </Button>
             </Grid>
           </Grid>

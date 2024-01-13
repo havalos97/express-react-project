@@ -27,12 +27,17 @@ export const createComment = async (req: Request, res: Response) => {
 
 export const updateComment = async (req: Request, res: Response) => {
   const commentUuid = req.params.uuid;
-  if (!await CommentModel.findByPk(commentUuid)) {
+  const foundComment = await CommentModel.findByPk(commentUuid);
+  if (!foundComment) {
     res.sendStatus(HTTPStatusCode.NOT_FOUND);
     return;
   }
   const updatedComment: Comment = req.body;
-  await CommentModel.update(updatedComment, { where: { uuid: commentUuid } });
+  await CommentModel.update({
+    ...updatedComment,
+    // Enforce existing uuid to prevent frontend from mutating it
+    uuid: foundComment.uuid,
+  }, { where: { uuid: commentUuid } });
   const comment = await CommentModel.findByPk(commentUuid);
   res.json(comment);
 };

@@ -1,8 +1,8 @@
 import { Alert, Button, Grid, TextField } from '@mui/material';
-import axios from 'axios';
 import { FC, useState } from 'react';
 import { Comment } from '../types';
 import { useCommentsContext } from '../hooks/useComment';
+import { postComment, updateComment } from '../api/comments.requests';
 
 const generateRandomEmail = () => {
   const chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
@@ -14,44 +14,87 @@ const generateRandomEmail = () => {
   return email + '@' + emailDomains[Math.floor(Math.random() * emailDomains.length)];
 };
 
-export const FormComment: FC = () => {
-  const [comment, setComment] = useState<string>('');
+type FormCommentProps = {
+  shouldUpdate?: boolean;
+}
+
+export const FormComment: FC<FormCommentProps> = ({
+  shouldUpdate = false
+}) => {
+  const {
+    commentObj,
+    setCommentObj,
+    updateCommentObj,
+    setUpdateCommentObj,
+    updateCommentByUuid,
+    setShowEditModal,
+  } = useCommentsContext();
   const [error, setError] = useState('');
   const { pushComment } = useCommentsContext();
 
   const handleCommentChange =
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setComment(e.target.value);
+      shouldUpdate
+        ? setUpdateCommentObj({
+          ...updateCommentObj,
+          comment: e.target.value,
+        })
+        : setCommentObj({
+          ...commentObj,
+          comment: e.target.value,
+        });
   
   const handleCommentSubmit = async () => {
+    // Resets error state
     setError('');
-    if (comment.length <= 0) {
+    if (
+      shouldUpdate
+        ? updateCommentObj.comment.length <= 0
+        : commentObj.comment.length <= 0
+    ) {
       setError('El campo no puede quedar vacío');
       return;
     }
-    const body = {
-      email: generateRandomEmail(),
-      comment,
-    };
 
-    const { data }: { data: Comment } = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/comment`,
-      body
-    );
-    if (data) pushComment(data);
+    if (shouldUpdate) {
+      const { data }: { data: Comment } = await updateComment({
+        uuid: updateCommentObj.uuid,
+        body: updateCommentObj,
+      });
+      updateCommentByUuid(updateCommentObj.uuid, data);
+      setShowEditModal(false);
+    } else {
+      const { data }: { data: Comment } = await postComment({
+        body: {
+          email: generateRandomEmail(),
+          comment: commentObj.comment,
+        }
+      });
+      if (data) pushComment(data);
+      setCommentObj({
+        uuid: '',
+        comment: '',
+        email: '',
+      });
+    }
   };
 
   return (
     <Grid container>
-      <Grid item md={4} sm={3} xs={12} />
-      <Grid item md={4} sm={6} xs={12}>
-        <Grid container spacing={2} sx={{ mt: 5 }}>
+      <Grid item md={shouldUpdate ? 12 : 4} sm={3} xs={12} />
+      <Grid item md={shouldUpdate ? 12 : 4} sm={6} xs={12}>
+        <Grid container spacing={2} sx={{ mt: shouldUpdate ? 0 : 5 }}>
           <Grid item xs={12}>
             <TextField
               disabled
               fullWidth
               label="Email"
               variant="outlined"
+              value={
+                shouldUpdate
+                  ? updateCommentObj.email
+                  : ''
+              }
             />
           </Grid>
           <Grid item xs={12}>
@@ -61,11 +104,15 @@ export const FormComment: FC = () => {
               variant="outlined"
               multiline
               maxRows={4}
-              value={comment}
+              value={
+                shouldUpdate
+                  ? updateCommentObj.comment
+                  : commentObj.comment
+              }
               onChange={handleCommentChange}
             />
-            {error &&
-              <Alert severity="error">
+            {!!error &&
+              <Alert severity="error" sx={{ mt: 2 }}>
                 {error}
               </Alert>
             }
@@ -76,7 +123,7 @@ export const FormComment: FC = () => {
               variant="contained"
               onClick={handleCommentSubmit}
             >
-              Save
+              {shouldUpdate ? 'Update comment' : 'Save'}
             </Button>
           </Grid>
         </Grid>
