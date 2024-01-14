@@ -5,7 +5,7 @@ import { useCommentsContext } from '../hooks/useComment';
 import { getAllComments } from '../api/comments.requests';
 
 export const MainComponent = () => {
-  const { comments, setComments } = useCommentsContext();
+  const { setComments } = useCommentsContext();
 
   useEffect(() => {
     getAllComments().then(({ data }) =>
@@ -16,7 +16,7 @@ export const MainComponent = () => {
   return (
     <>
       <FormComment />
-      {comments.length && <CommentList />}
+      <CommentList />
     </>
   );
 };
