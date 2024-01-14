@@ -14,11 +14,11 @@ cp ./frontend/env-example ./frontend/.env
 ```
 5. Install frontend libraries:
 ```sh
-cd ../frontend && yarn && cd ..
+cd ./frontend && yarn && cd ..
 ```
 6. Install frontend libraries:
 ```sh
-cd ../backend && yarn && cd ..
+cd ./backend && yarn && cd ..
 ```
 7. Give execution permissions to the scripts *dcbuild* and *dcup*:
 ```sh
