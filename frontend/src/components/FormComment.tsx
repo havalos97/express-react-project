@@ -24,8 +24,8 @@ export const FormComment: FC<FormCommentProps> = ({
   const {
     commentObj,
     setCommentObj,
-    updateCommentObj,
-    setUpdateCommentObj,
+    commentToUpdateObj,
+    setCommentToUpdateObj,
     updateCommentByUuid,
     setShowEditModal,
   } = useCommentsContext();
@@ -35,8 +35,8 @@ export const FormComment: FC<FormCommentProps> = ({
   const handleCommentChange =
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       shouldUpdate
-        ? setUpdateCommentObj({
-          ...updateCommentObj,
+        ? setCommentToUpdateObj({
+          ...commentToUpdateObj,
           comment: e.target.value,
         })
         : setCommentObj({
@@ -49,7 +49,7 @@ export const FormComment: FC<FormCommentProps> = ({
     setError('');
     if (
       shouldUpdate
-        ? updateCommentObj.comment.length <= 0
+        ? commentToUpdateObj.comment.length <= 0
         : commentObj.comment.length <= 0
     ) {
       setError('El campo no puede quedar vacío');
@@ -58,10 +58,10 @@ export const FormComment: FC<FormCommentProps> = ({
 
     if (shouldUpdate) {
       const { data }: { data: Comment } = await updateComment({
-        uuid: updateCommentObj.uuid,
-        body: updateCommentObj,
+        uuid: commentToUpdateObj.uuid,
+        body: commentToUpdateObj,
       });
-      updateCommentByUuid(updateCommentObj.uuid, data);
+      updateCommentByUuid(commentToUpdateObj.uuid, data);
       setShowEditModal(false);
     } else {
       const { data }: { data: Comment } = await postComment({
@@ -92,7 +92,7 @@ export const FormComment: FC<FormCommentProps> = ({
               variant="outlined"
               value={
                 shouldUpdate
-                  ? updateCommentObj.email
+                  ? commentToUpdateObj.email
                   : ''
               }
             />
@@ -106,7 +106,7 @@ export const FormComment: FC<FormCommentProps> = ({
               maxRows={4}
               value={
                 shouldUpdate
-                  ? updateCommentObj.comment
+                  ? commentToUpdateObj.comment
                   : commentObj.comment
               }
               onChange={handleCommentChange}

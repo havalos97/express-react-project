@@ -1,0 +1,165 @@
+_type: export
+__export_format: 4
+__export_date: 2024-01-14T01:43:56.940Z
+__export_source: insomnia.desktop.app:v8.5.1
+resources:
+  - _id: req_2ddc0fb06d794dc991d4bab22c0885b6
+    parentId: wrk_scratchpad
+    modified: 1705112246111
+    created: 1705092143797
+    url: "{{API_URL}}/api/comment/612d6d2b-bd93-4261-9c79-5985a5d2675c"
+    name: /api/comment
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.5.1
+    authentication: {}
+    metaSortKey: -1705092143797
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_scratchpad
+    parentId: null
+    modified: 1704946537260
+    created: 1704946537260
+    name: Scratch Pad
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_f19ce35466934da9be80a1db26556661
+    parentId: wrk_scratchpad
+    modified: 1705112136132
+    created: 1705092971112
+    url: "{{API_URL}}/api/comment"
+    name: /api/comment
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email":"test@gmail.com",
+        	"comment": "brief comment"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.5.1
+    authentication: {}
+    metaSortKey: -1705092138591
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_031ccf48a3c24fcda95e1232c44c118b
+    parentId: wrk_scratchpad
+    modified: 1705110172828
+    created: 1705092923984
+    url: "{{API_URL}}/api/comment/4c0ff0e1-e0b5-4e27-b3fd-f42f922a41d6"
+    name: /api/comment
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email":"test@hotmail.com",
+        	"comment": "brief comment 2"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.5.1
+    authentication: {}
+    metaSortKey: -1705092133385
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_7c44588483c04a5aa838435c8f4d96d6
+    parentId: wrk_scratchpad
+    modified: 1705092137523
+    created: 1705092122973
+    url: "{{API_URL}}/api/comments"
+    name: /api/comments
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.5.1
+    authentication: {}
+    metaSortKey: -1705092122973
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_c703da08f44f49e9af4e37b6858d8db7
+    parentId: wrk_scratchpad
+    modified: 1705028193241
+    created: 1704946565367
+    url: "{{API_URL}}/api/healthcheck"
+    name: /api/healthcheck
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.5.1
+    authentication: {}
+    metaSortKey: -1704946565367
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    parentId: wrk_scratchpad
+    modified: 1705028197867
+    created: 1704946553663
+    name: Base Environment
+    data:
+      API_URL: http://localhost:3001
+    dataPropertyOrder:
+      "&":
+        - API_URL
+    color: null
+    isPrivate: false
+    metaSortKey: 1704946553664
+    _type: environment
+  - _id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    parentId: wrk_scratchpad
+    modified: 1704946553734
+    created: 1704946553734
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar

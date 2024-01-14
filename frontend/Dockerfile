@@ -7,5 +7,8 @@ RUN yarn
 
 COPY . .
 
+RUN chown -R node:node .
+USER node
+
 EXPOSE 3000
 CMD ["yarn", "start"]

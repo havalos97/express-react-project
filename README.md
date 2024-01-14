@@ -35,3 +35,14 @@ sudo chmod +x ./scripts/dcup
 ```sh
 ./scripts/dcup
 ```
+
+## Test the project
+### Once the project is up and running follow these steps to test both the frontend and the backend
+1. Go to http://localhost:3000/ to access the react application.
+2. Import the YAML file inside the folder */insomnia_requests* to test the API endpoints.
+
+## Unit tests
+### Run the unit tests with the following command:
+```sh
+cd frontend && yarn test
+```

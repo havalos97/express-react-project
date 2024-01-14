@@ -19,8 +19,8 @@ type CommentsContextType = {
   setComments: StateDispatch<Comment[]>;
   commentObj: Comment;
   setCommentObj: StateDispatch<Comment>;
-  updateCommentObj: Comment;
-  setUpdateCommentObj: StateDispatch<Comment>;
+  commentToUpdateObj: Comment;
+  setCommentToUpdateObj: StateDispatch<Comment>;
   pushComment: (comment: Comment) => void;
   deleteComment: (commentUuid: string) => void;
   updateCommentByUuid: (commentUuid: string, comment: Comment) => void;
@@ -40,7 +40,7 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
     comment: '',
     email: '',
   });
-  const [updateCommentObj, setUpdateCommentObj] = useState<Comment>({
+  const [commentToUpdateObj, setCommentToUpdateObj] = useState<Comment>({
     uuid: '',
     comment: '',
     email: '',
@@ -67,7 +67,7 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
     ]);
 
   const handleCloseEditModal = () => {
-    setUpdateCommentObj({
+    setCommentToUpdateObj({
       uuid: '',
       comment: '',
       email: '',
@@ -76,7 +76,7 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
   };
 
   const handleCloseConfirmModal = () => {
-    setUpdateCommentObj({
+    setCommentToUpdateObj({
       uuid: '',
       comment: '',
       email: '',
@@ -86,9 +86,9 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
 
   const deleteCommentFromAPI = async () => {
     await deleteFromAPI({
-      uuid: updateCommentObj.uuid,
+      uuid: commentToUpdateObj.uuid,
     });
-    deleteComment(updateCommentObj.uuid);
+    deleteComment(commentToUpdateObj.uuid);
     setShowConfirmModal(false);
   };
 
@@ -99,8 +99,8 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
         setComments,
         commentObj,
         setCommentObj,
-        updateCommentObj,
-        setUpdateCommentObj,
+        commentToUpdateObj,
+        setCommentToUpdateObj,
         pushComment,
         deleteComment,
         updateCommentByUuid,
@@ -141,13 +141,13 @@ export const CommentsContextProvider = ({ children }: { children: JSX.Element })
                 Autor
               </Typography>
               <Typography variant='body1' sx={{ margin: 1 }}>
-                {updateCommentObj.email}
+                {commentToUpdateObj.email}
               </Typography>
               <Typography variant='h6' sx={{ margin: 1 }}>
                 Comentario
               </Typography>
               <Typography variant='body1' sx={{ margin: 1 }}>
-                {updateCommentObj.comment}
+                {commentToUpdateObj.comment}
               </Typography>
             </Card>
           </DialogContent>

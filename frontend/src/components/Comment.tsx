@@ -6,7 +6,7 @@ import { useCommentsContext } from '../hooks/useComment';
 export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
   const {
     comments,
-    setUpdateCommentObj,
+    setCommentToUpdateObj,
     setShowEditModal,
     setShowConfirmModal,
   } = useCommentsContext();
@@ -18,7 +18,7 @@ export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
 
   const deleteComment = () => {
     if (selectedComment) {
-      setUpdateCommentObj({
+      setCommentToUpdateObj({
         uuid: selectedComment.uuid,
         comment: selectedComment.comment,
         email: selectedComment.email,
@@ -29,7 +29,7 @@ export const Comment: FC<CommentType> = ({ uuid, email, comment }) => {
 
   const updateComment = () => {
     if (selectedComment) {
-      setUpdateCommentObj({
+      setCommentToUpdateObj({
         uuid: selectedComment.uuid,
         comment: selectedComment.comment,
         email: selectedComment.email,

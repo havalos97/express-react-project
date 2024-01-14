@@ -16,14 +16,16 @@ export const CommentList: FC = () => {
       <Grid item xs={12} sm={3} md={4} />
       <Grid item xs={12} sm={6} md={4}>
         {
-          comments.map((comment) => (
-            <Comment
-              key={comment.uuid}
-              uuid={comment.uuid}
-              email={comment.email}
-              comment={comment.comment}
-            />
-          ))
+          comments.length
+            ? comments.map((comment) => (
+              <Comment
+                key={comment.uuid}
+                uuid={comment.uuid}
+                email={comment.email}
+                comment={comment.comment}
+              />
+            ))
+            : <>No hay comentarios todavia</>
         }
       </Grid>
     </Grid>
